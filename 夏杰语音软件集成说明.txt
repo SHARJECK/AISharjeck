@@ -1,0 +1,41 @@
+夏杰语音相关软件集成说明：
+
+######################
+1)AISharjeck_xxx.apk
+==========夏杰语音软件；【该APP需要系统保活，开机自动运行。】
+
+2)AI智能管家（AIManager_xxx_pure.apk）
+==========功能插件【自动辅助开启语音软件相关权限】，如果无法安装，需要重新签名。
+
+##############################
+基本上安装就可以直接用，用户什么都不用管。
+如果用不了，注意几个地方
+1）打开语音页面，使用说明，尽量开一下权限。
+2）如果无法开启权限，可以将夏杰语音设置为默认输入法。
+
+##############################
+##############################
+夏杰语音语音按键键值【以下任意一个键值即可，记得将夏杰语音设置为默认输入法】
+case KeyEvent.KEYCODE_KATAKANA_HIRAGANA:
+case KeyEvent.KEYCODE_MUHENKAN:
+case KeyEvent.KEYCODE_HENKAN:
+case KeyEvent.KEYCODE_SEARCH://Sharjeck
+
+##############################
+##############################
+##############################
+如果语音软件开机无法自动运行，可以通过一下接口拉起。
+/**
+ * 启用夏杰语音软件服务
+ */
+public void startAISpeech(Context context) {
+    String pakageName = "com.peasun.aispeechgl";//夏杰语音3.2.*.*以上版本支持
+    Intent localIntent = new Intent();
+    localIntent.setPackage(pakageName);
+    localIntent.setAction("com.peasun.aispeech.action.start");
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.startForegroundService(localIntent);
+    } else {
+        context.startService(localIntent);
+    }
+}
